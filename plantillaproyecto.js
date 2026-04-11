@@ -68,7 +68,7 @@ let resultadoFinal = generarespacios (palabraSecreta);
 console.log(resultadoFinal);
 
 while (vidas > 0){
-  let progreso = generarespacios(palabrasecreta);
+  let progreso = generarespacios(palabraSecreta);
   console.log("Palabra " +progreso);
   console.log("Vidas restantes:" +vidas);
 
@@ -84,7 +84,7 @@ while (vidas > 0){
     continue; 
      }
 
-  if (palabrasecreta.includes(intento) && !acertadas.includes(intento)){
+  if (palabraSecreta.includes(intento) && !acertadas.includes(intento)){
     console.log ("¡Acertaste!");
     acertadas.push(intento);
   
