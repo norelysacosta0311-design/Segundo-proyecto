@@ -1,8 +1,3 @@
-// version 1.0.0
-
-// No borrar ni modificar las constantes y variables que ya están declaradas, ya que son necesarias para el funcionamiento del juego.
-// Simplemente comenta las líneas indicadas más abajo una vez hagas las pruebas del funcionamiento del código inicial.
-
 let username = "";
 
 const readline = require('readline');
@@ -13,11 +8,13 @@ const rl = readline.createInterface({
 });
 
 
+function calcularPuntaje(vidasRestantes) {
+    let puntos = vidasRestantes * 100;
+    console.log("Tu puntaje final es: " + puntos);
+    return puntos;
+}
 
-// ------------------- Función para pedir datos al usuario ----------------------
-// Esta función se encarga de obtener la entrada del usuario a través de la consola. 
-// Toma una pregunta como argumento, la muestra al usuario y espera su respuesta. 
-// Una vez que el usuario ingresa su respuesta, la función devuelve esa respuesta como una cadena de texto.
+
 function getUserInput(question) {
     return new Promise((resolve) => {
         rl.question(question + " ", (answer) => {
@@ -26,43 +23,48 @@ function getUserInput(question) {
     });
 }
 
-//-------------------- Fin del código Espacio Educa ----------------------
 
-// Recuerda que debes seguir las instrucciones del proyecto para completar el juego.
-// Y no borres el código que ya está escrito, ya que es necesario para el funcionamiento del juego.
-// Solo comenta las líneas indicadas más arriba.
 
-// Get ur coffee and Empieza a codear!!
+const listaDePalabras = [
 
-// Declara las variables que necesitas para el juego antes de llamar a la función startGame.
+    { palabra: "OTORRINOLARINGOLOGO", pista: "Profesión médica." },
+    { palabra: "PROGRAMACION", pista: "Arte de darle intrucciones a una computadora." },
+    { palabra: "MUSICA", pista: "Se compone de elementos clave como ritmo, armonía, timbre y melodía." },
+    { palabra: "SUEÑO", pista: "Estado de reposo involuntario del cuerpo." }
+];
 
-// Luego llama a la función startGame para iniciar el juego.
 
-const palabrasecreta = "OTORRINOLARINGOLOGO"
+const seleccion = listaDePalabras[Math.floor(Math.random() * listaDePalabras.length)];
+const palabraSecreta = seleccion.palabra;
+const pistaActual = seleccion.pista;
+
+
 let vidas = 5;
 let acertadas =[];
 
+
+function saludarJugador(nombre, pistaParaMostrar){
+
+  console.log("Bienvenido/a "+nombre+" al ahorcado, tienes "+vidas+" vidas para completar la palabra.")
+  console.log("Pista: "+pistaParaMostrar );
+}
 
 
 startGame();
 
 async function startGame(){
-    // Aquí va la lógica principal del juego.
+    
 
-function saludarJugador(nombre){
-
-  console.log("Bienvenido "+nombre+" al ahorcado, tienes "+vidas+" vidas para completar la palabra. Pista: Profesión médica. ¡Buena suerte!")
-}
-saludarJugador("Norelys");
+saludarJugador("Norelys", pistaActual );
 
 
 function generarespacios(palabra){
 
-  return palabra.split('').map (letra => acertadas.includes(letra) ? letra : "_").join('');
+  return palabra.split('').map (letra => acertadas.includes(letra) ? letra : "_").join(' ');
   
 }
 
-let resultadoFinal = generarespacios ("OTORRINOLARINGOLOGO");
+let resultadoFinal = generarespacios (palabraSecreta);
 console.log(resultadoFinal);
 
 while (vidas > 0){
@@ -75,7 +77,12 @@ while (vidas > 0){
     break;
   }
 
-  let intento = (await getUserInput("Introduce una letra:")).toUpperCase();
+  let intento = (await getUserInput("Introduce una letra:")).toUpperCase() .trim();
+
+  if (intento.length !== 1 || !/^[A-ZÑ]$/.test(intento)) {
+    console.log("Entrada no válida. Por favor, introduce solo UNA letra (sin números ni símbolos).");
+    continue; 
+     }
 
   if (palabrasecreta.includes(intento) && !acertadas.includes(intento)){
     console.log ("¡Acertaste!");
@@ -102,5 +109,5 @@ if (vidas === 0){
   console.log ("GAME OVER. La palabra era: "+palabrasecreta);
 }
 
-    return rl.close(); // Linea que hace que el programa se cierre una vez termine el juego. No la borres ni comentes.
+    return rl.close(); 
 }
